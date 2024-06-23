@@ -12,10 +12,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Spinner from "./components/spinner";
 import { useDropzone } from "react-dropzone";
-import ImageEditor from "./components/ImageEditor";
 import ImageList from "@mui/material/ImageList";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ImageListItem from "@mui/material/ImageListItem";
+import ImgEditor from "./components/imgEditor";
 const style = {
   position: "absolute",
   top: "50%",
@@ -64,6 +64,8 @@ function App() {
   const [uploadStatus, setUploadStatus] = React.useState("");
   const [uploadedFileName, setUploadedFileName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [editing, setEditing] = React.useState(false);
+  const [editImage, setEditImage] = React.useState("");
   const [cards, setCards] = React.useState([
     { image: "", id: 0 },
     { image: "", id: 1 },
@@ -118,6 +120,10 @@ function App() {
     setSelectId(id);
     setOpen(true);
   };
+  const handleEdit = (image) => {
+    setEditImage(image);
+    setEditing(true);
+  };
   const handleClose = () => setOpen(false);
   const handleUpload = async (event) => {
     if (selectedFile) {
@@ -136,13 +142,7 @@ function App() {
           }
         );
         setUploadStatus(response.data.message);
-        // console.log(response.data);
         setUploadedFileName(response.data.filePath);
-        // setCards([
-        //   ...cards.map((item) =>
-        //     item.id == selectId ? { ...item, image: response.data.filePath } : item
-        //   ),
-        // ]);
         setRecentImages([...recentImages, response.data.filePath]);
         setLoading(false);
       } catch (error) {
@@ -159,29 +159,36 @@ function App() {
         {loading ? (
           <Spinner />
         ) : (
-          <div className="template">
-            <Grid
-              container
-              spacing={{ xs: 2, md: 3 }}
-              columns={{ xs: 4, sm: 8, md: 12 }}
-            >
-              {cards.map((_, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
-                  <Item>
-                    {index !== 4 ? (
-                      <ItemCard
-                        id={_.id}
-                        image={_.image}
-                        handleOpen={handleOpen}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </Item>
+          <>
+            {editing && editImage ? (
+              <ImgEditor ImgSrc={editImage} setEditing={setEditing}/>
+            ) : (
+              <div className="template">
+                <Grid
+                  container
+                  spacing={{ xs: 2, md: 3 }}
+                  columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                  {cards.map((_, index) => (
+                    <Grid item xs={2} sm={4} md={4} key={index}>
+                      <Item>
+                        {index !== 4 ? (
+                          <ItemCard
+                            id={_.id}
+                            imageSrc={_.image}
+                            handleOpen={handleOpen}
+                            handleEdit={handleEdit}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </Item>
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-            </Grid>
-          </div>
+              </div>
+            )}
+          </>
         )}
         <div>
           <Modal

@@ -6,13 +6,13 @@ import { CardActionArea } from "@mui/material";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
-export default function ItemCard({ id, image, handleOpen }) {
+export default function ItemCard({ id, imageSrc, handleOpen, handleEdit }) {
   return (
     <Card sx={{ maxWidth: "100%" }}>
       <CardActionArea>
         <CardMedia
           component="img"
-          image={image === "" ? "/images.jpeg" : `${image}`}
+          image={imageSrc === "" ? "/images.jpeg" : `${imageSrc}`}
           alt="green iguana"
           height="240px"
           width={"100%"}
@@ -27,7 +27,7 @@ export default function ItemCard({ id, image, handleOpen }) {
             species, ranging across all continents except Antarctica
           </Typography>
         </CardContent> */}
-        {image !== "" ? (
+        {imageSrc !== "" ? (
           <ImageListItemBar
             title={""}
             subtitle={""}
@@ -35,7 +35,7 @@ export default function ItemCard({ id, image, handleOpen }) {
               <IconButton
                 sx={{ color: "rgba(255, 255, 255, 0.54)" }}
                 aria-label={`info about ${id}`}
-                onClick={() => alert("endi")}
+                onClick={() => handleEdit(imageSrc)}
               >
                 <InfoIcon />
               </IconButton>
