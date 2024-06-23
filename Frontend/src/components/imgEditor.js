@@ -169,14 +169,14 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
               <img
                 alt="Crop me"
                 src={imgSrc}
-                style={{ transform: `rotate(${rotate}deg)` }}
+                style={{ transform: `rotate(${rotate}deg)`, height: "500px"}}
                 onLoad={onImageLoad}
               />
             </TransformComponent>
           </TransformWrapper>
         </ReactCrop>
       )}
-      <div>
+      <span>
         <canvas
           ref={previewCanvasRef}
           style={{
@@ -187,7 +187,7 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
             filter: selectedFilter,
           }}
         />
-      </div>
+      </span>
       <div>
         <Grid container spacing={2}>
           <Grid item xs={4}>
