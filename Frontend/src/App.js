@@ -270,10 +270,10 @@ function App() {
                       loading="lazy"
                       onClick={() => {
                         setCards([
-                          ...cards.map((item) =>
-                            item.id === selectId
-                              ? { ...item, image: item }
-                              : item
+                          ...cards.map((item1) =>
+                            item1.id === selectId
+                              ? { ...item1, image: item }
+                              : item1
                           ),
                         ]);
                         setUploadedFileName(item);
