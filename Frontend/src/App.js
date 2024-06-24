@@ -272,10 +272,11 @@ function App() {
                         setCards([
                           ...cards.map((item) =>
                             item.id === selectId
-                              ? { ...item, image: uploadedFileName }
+                              ? { ...item, image: item }
                               : item
                           ),
                         ]);
+                        setUploadedFileName(item);
                         // localStorage.setItem("cards", JSON.stringify(cards));
                         handleClose();
                       }}
