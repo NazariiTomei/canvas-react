@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as s,a as c}from"./index-Bcp_3mIL.js";const o={},n=c("h1",null,"This is Other Page",-1),r=[n];function a(_,i){return s(),t("div",null,r)}const d=e(o,[["render",a]]);export{d as default};

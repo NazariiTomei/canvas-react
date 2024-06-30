@@ -133,6 +133,7 @@ function App() {
 
       try {
         const response = await axios.post(
+          // "http://195.14.123.132:5000/upload",
           "http://localhost:5000/upload",
           formData,
           {
@@ -161,7 +162,7 @@ function App() {
         ) : (
           <>
             {editing && editImage ? (
-              <ImgEditor ImgSrc={editImage} setEditing={setEditing}/>
+              <ImgEditor ImgSrc={editImage} setEditing={setEditing} />
             ) : (
               <div className="template">
                 <Grid
@@ -232,58 +233,40 @@ function App() {
               <Typography variant="h5" component="h2">
                 Or Choose from your recent images
               </Typography>
-              {/* {recentImages.length ? (
+              {openDialog ? (
                 <div>
-                  <Grid
-                    container
-                    spacing={{ xs: 2, md: 3 }}
+                  <ImageList
+                    sx={{ width: 730, height: 450 }}
+                    cols={3}
+                    rowHeight={240}
                   >
-                    {recentImages.map((_, index) => (
-                      <Grid item xs={2} sm={4} md={4} key={index}>
-                        <Item>
-                          {
-                            <ItemCard
-                              id={_.id}
-                              image={_}
-                              handleOpen={()=>handleOpen(selectId)}
-                            />
-                          }
-                        </Item>
-                      </Grid>
+                    {recentImages.map((item, index) => (
+                      <ImageListItem key={item}>
+                        <img
+                          srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                          src={`${item}?w=164&h=164&fit=crop&auto=format`}
+                          alt={index}
+                          loading="lazy"
+                          onClick={() => {
+                            setCards([
+                              ...cards.map((item1) =>
+                                item1.id === selectId
+                                  ? { ...item1, image: item }
+                                  : item1
+                              ),
+                            ]);
+                            setUploadedFileName(item);
+                            // localStorage.setItem("cards", JSON.stringify(cards));
+                            handleClose();
+                          }}
+                        />
+                      </ImageListItem>
                     ))}
-                  </Grid>
+                  </ImageList>
                 </div>
               ) : (
-                <div></div>
-              )} */}
-              <ImageList
-                sx={{ width: 730, height: 450 }}
-                cols={3}
-                rowHeight={240}
-              >
-                {recentImages.map((item, index) => (
-                  <ImageListItem key={item}>
-                    <img
-                      srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                      src={`${item}?w=164&h=164&fit=crop&auto=format`}
-                      alt={index}
-                      loading="lazy"
-                      onClick={() => {
-                        setCards([
-                          ...cards.map((item1) =>
-                            item1.id === selectId
-                              ? { ...item1, image: item }
-                              : item1
-                          ),
-                        ]);
-                        setUploadedFileName(item);
-                        // localStorage.setItem("cards", JSON.stringify(cards));
-                        handleClose();
-                      }}
-                    />
-                  </ImageListItem>
-                ))}
-              </ImageList>
+                <></>
+              )}
 
               <Button
                 variant="contained"

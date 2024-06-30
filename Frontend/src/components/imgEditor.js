@@ -7,16 +7,22 @@ import { canvasPreview } from "./canvasPreview";
 import useDebounceEffect from "./useDebounceEffect";
 import { Grid, Button } from "@mui/material";
 import { Start } from "@mui/icons-material";
-
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 const ImageEditor = ({ ImgSrc, setEditing }) => {
   const [imgSrc, setImgSrc] = useState(ImgSrc);
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
-  const [crop, setCrop] = useState(null);
-  const [completedCrop, setCompletedCrop] = useState(null);
+  const [crop, setCrop] = useState({
+    unit: "%",
+    width: 50,
+    height: 50,
+    x: 0,
+    y: 0,
+  });
+  const [completedCrop, setCompletedCrop] = useState(crop);
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState(16 / 9);
+  const [aspect, setAspect] = useState(1 / 1);
   const dimensions = useRef([0, 0]);
   const [selectedFilter, setSelectedFilter] = useState("");
 
@@ -86,7 +92,8 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
           />
         </div>
         <div>
-          <button
+          <Button
+            variant="outlined"
             onClick={() => {
               const [width, height] = dimensions.current;
               setCrop({
@@ -100,8 +107,8 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
             }}
           >
             Change to 1 / 1
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               const [width, height] = dimensions.current;
               setCrop({
@@ -113,10 +120,12 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
               });
               setAspect(16 / 9);
             }}
+            variant="outlined"
           >
             Change to 16 / 9
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="outlined"
             onClick={() => {
               setCrop({
                 unit: "px",
@@ -129,7 +138,7 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
             }}
           >
             Change to no aspect
-          </button>
+          </Button>
         </div>
         <div>
           <label htmlFor="colorFilterComboBox">Choose a color filter:</label>
@@ -169,7 +178,7 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
               <img
                 alt="Crop me"
                 src={imgSrc}
-                style={{ transform: `rotate(${rotate}deg)`, height: "500px"}}
+                style={{ transform: `rotate(${rotate}deg)`, height: "500px" }}
                 onLoad={onImageLoad}
               />
             </TransformComponent>
@@ -188,19 +197,14 @@ const ImageEditor = ({ ImgSrc, setEditing }) => {
           }}
         />
       </span>
+
       <div>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <Button variant="container" onClick={() => setEditing(false)}>
-              Cancel
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button variant="container" onClick={() => setEditing(false)}>
-              DONE
-            </Button>
-          </Grid>
-        </Grid>
+        <Button variant="contained" onClick={() => setEditing(false)}>
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={() => setEditing(false)}>
+          DONE
+        </Button>
       </div>
     </div>
   );
